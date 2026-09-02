@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  fullName  String
+  role      String   @default("STOREKEEPER") // ADMIN, MANAGER, STOREKEEPER
+  createdAt DateTime @default(now())
+  logs      OperationsLog[]
+}
+
+model Warehouse {
+  id          Int             @id @default(autoincrement())
+  name        String
+  location    String?
+  isShowroom  Boolean         @default(false)
+  stocks      Stock[]
+  logs        OperationsLog[]
+}
+
+model Item {
+  id                 Int             @id @default(autoincrement())
+  sku                String          @unique
+  barcode            String          @unique
+  name               String
+  category           String
+  unit               String          @default("шт")
+  minStockThreshold  Float           @default(5.0)
+  stocks             Stock[]
+  logs               OperationsLog[]
+}
+
+model Stock {
+  id               Int       @id @default(autoincrement())
+  itemId           Int
+  warehouseId      Int
+  quantityPhysical Float     @default(0.0)
+  quantityReserved Float     @default(0.0)
+  item             Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  warehouse        Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, warehouseId])
+}
+
+model OperationsLog {
+  id          Int       @id @default(autoincrement())
+  itemId      Int
+  warehouseId Int
+  userId      Int?
+  type        String    // INCOMING, OUTGOING, RESERVE, UNRESERVE, WRITE_OFF, INVENTORY_ADJUST
+  quantity    Float
+  orderRef    String?
+  comment     String?
+  createdBy   String
+  createdAt   DateTime  @default(now())
+  item        Item      @relation(fields: [itemId], references: [id])
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  user        User?     @relation(fields: [userId], references: [id])
+}

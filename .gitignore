@@ -1,0 +1,53 @@
+# Залежності (пакунки)
+node_modules/
+*/node_modules/
+package-lock.json.backup
+
+# Змінні середовища та конфіги з паролями/секретами
+.env
+.env.local
+.env.*.local
+*.env
+
+# Логи та системні дампи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Збірки Web (Vite / React)
+dist/
+dist-ssr/
+web/dist/
+*.local
+
+# Мобільний додаток (Expo / React Native)
+.expo/
+mobile/.expo/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# База даних SQLite та міграції/дампи
+backend/prisma/*.db
+backend/prisma/*.db-journal
+*.sqlite
+*.sqlite3
+*.db
+
+# Кеш редакторів коду та ОС
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
