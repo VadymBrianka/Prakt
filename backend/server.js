@@ -267,7 +267,7 @@ app.put('/api/items/:id', authenticateToken, requireRoles(['ADMIN', 'MANAGER']),
   }
 });
 
-app.delete('/api/items/:id', authenticateToken, requireRoles(['ADMIN', 'MANAGER']), async (req, res) => {
+app.delete('/api/items/:id', authenticateToken, requireRoles(['ADMIN']), async (req, res) => {
   const { id } = req.params;
   try {
     await prisma.item.delete({ where: { id: parseInt(id) } });
